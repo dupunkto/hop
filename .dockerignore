@@ -1,0 +1,17 @@
+.git
+.gitignore
+.dockerignore
+.djlintrc
+.ruff_cache
+__pycache__
+*.pyc
+*.pyo
+.venv
+.env
+*.log
+Shakefile
+Liftfile
+instance
+*.db
+README*
+*.md

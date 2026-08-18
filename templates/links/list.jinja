@@ -22,7 +22,7 @@
                 {% for link in links %}
                     <tr>
                         <td>
-                            <a href="{{ url_for('links.edit_link', link_id=link.id) }}">{{ link.slug }}</a>
+                            <a href="{{ url_for('links.edit_link', link_id=link.id) }}">{{ link.slug or "/" }}</a>
                         </td>
                         <td>{{ link.target_url }}</td>
                         <td>

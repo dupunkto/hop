@@ -78,8 +78,8 @@ def update_link(link_id):
     link = Link.query.get_or_404(link_id)
     fields = read_link_form()
 
-    if not fields["slug"] or not fields["target_url"]:
-        flash("A link needs a slug and a target URL.", "error")
+    if not fields["target_url"]:
+        flash("A link needs a target URL.", "error")
         return render_template("links/form.jinja", link=link), 400
 
     try:

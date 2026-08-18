@@ -37,9 +37,8 @@
             <input type="text"
                    name="slug"
                    pattern="[a-z0-9]+(-[a-z0-9]+)*"
-                   placeholder="{%- if link and link.id -%}e.g. my-link{%- else -%}leave blank to auto-generate{%- endif -%}"
-                   value="{{ link.slug if link else '' }}"
-                   {% if link and link.id %}required{% endif %}>
+                   placeholder="{%- if link and link.id -%}leave blank to make this the / redirect{%- else -%}leave blank to auto-generate{%- endif -%}"
+                   value="{{ link.slug if link else '' }}">
         </label>
 
         <label>

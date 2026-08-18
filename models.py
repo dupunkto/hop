@@ -44,7 +44,7 @@ class Link(db.Model):
     @validates("slug")
     def validate_slug(self, key, value):
         value = (value or "").strip().lower()
-        if not SLUG_RE.match(value):
+        if value and not SLUG_RE.match(value):
             raise ValueError("A slug can only contain lowercase letters, digits and hyphens.")
         return value
 

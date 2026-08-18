@@ -31,6 +31,13 @@ with app.app_context():
     run_migrations()
 
 
+def resolve_redirect(slug):
+    link = Link.query.filter_by(slug=slug.lower()).first()
+    if not link or not link.is_active:
+        abort(404)
+    return redirect(link.target_url, code=301 if link.is_permanent else 302)
+
+
 @app.before_request
 def enforce_domain_split():
     if not ADMIN_DOMAIN and not REDIRECT_DOMAIN:
@@ -40,6 +47,8 @@ def enforce_domain_split():
     is_redirect_endpoint = request.endpoint == "redirect_slug"
 
     if host == REDIRECT_DOMAIN:
+        if request.path == "/":
+            return resolve_redirect("")
         if not is_redirect_endpoint:
             abort(404)
     elif host == ADMIN_DOMAIN:
@@ -51,10 +60,7 @@ def enforce_domain_split():
 
 @app.get("/<slug>")
 def redirect_slug(slug):
-    link = Link.query.filter_by(slug=slug.lower()).first()
-    if not link or not link.is_active:
-        abort(404)
-    return redirect(link.target_url, code=301 if link.is_permanent else 302)
+    return resolve_redirect(slug)
 
 
 if __name__ == "__main__":

@@ -1,4 +1,4 @@
 name: hop
 image: dupunkto/hop
 registry: ghcr.io
-host: dec
+host: nov

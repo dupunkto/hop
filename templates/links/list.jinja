@@ -1,0 +1,45 @@
+{% extends "base.jinja" %}
+
+{% block title %}Links{% endblock %}
+
+{% block content %}
+    <header class="bar">
+        <h2>Links</h2>
+        <a href="{{ url_for('links.new_link') }}" class="button">New link</a>
+    </header>
+
+    {% if links %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Slug</th>
+                    <th>Target</th>
+                    <th>Status</th>
+                    <th>Redirect</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for link in links %}
+                    <tr>
+                        <td>
+                            <a href="{{ url_for('links.edit_link', link_id=link.id) }}">{{ link.slug }}</a>
+                        </td>
+                        <td>{{ link.target_url }}</td>
+                        <td>
+                            {% if link.status_label != "active" %}
+                                {{ link.status_label }}
+                            {% elif link.expires_at %}
+                                expires {{ link.expires_at | timeago }}
+                            {% else %}
+                                active
+                            {% endif %}
+                        </td>
+                        <td>{{ "permanent" if link.is_permanent else "temporary" }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p class="placeholder-text">No links yet.</p>
+    {% endif %}
+{% endblock %}

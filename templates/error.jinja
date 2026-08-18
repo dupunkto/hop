@@ -1,0 +1,12 @@
+{% extends "base.jinja" %}
+
+{% block title %}{{ code }} {{ title }}{% endblock %}
+
+{% block content %}
+    <hgroup>
+        <p>{{ code }}</p>
+        <h1>{{ title }}</h1>
+    </hgroup>
+    <p>{{ description }}</p>
+    <a href="{{ url_for('links.list_links') }}">Back to home</a>
+{% endblock %}

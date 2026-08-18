@@ -1,0 +1,76 @@
+{% extends "base.jinja" %}
+
+{% block title %}
+    {% if link and link.id %}
+        Edit link
+    {% else %}
+        New link
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    <header class="bar">
+        <h2>
+            {% if link and link.id %}
+                Edit link
+            {% else %}
+                New link
+            {% endif %}
+        </h2>
+    </header>
+
+    <form id="link-form"
+          method="post"
+          action="{%- if link and link.id -%}{{ url_for('links.update_link', link_id=link.id) }}{%- else -%}{{ url_for('links.create_link') }}{%- endif -%}">
+        <label>
+            Target URL
+            <input type="url"
+                   name="target_url"
+                   placeholder="https://example.com/some/long/path"
+                   value="{{ link.target_url if link else '' }}"
+                   required
+                   autofocus>
+        </label>
+
+        <label>
+            Slug
+            <input type="text"
+                   name="slug"
+                   pattern="[a-z0-9]+(-[a-z0-9]+)*"
+                   placeholder="{%- if link and link.id -%}e.g. my-link{%- else -%}leave blank to auto-generate{%- endif -%}"
+                   value="{{ link.slug if link else '' }}"
+                   {% if link and link.id %}required{% endif %}>
+        </label>
+
+        <label>
+            Expires at
+            <input type="datetime-local"
+                   name="expires_at"
+                   value="{{ link.expires_at.strftime('%Y-%m-%dT%H:%M') if link and link.expires_at else '' }}">
+        </label>
+
+        <label>
+            <input type="checkbox"
+                   name="is_permanent"
+                   value="true"
+                   {% if link and link.is_permanent %}checked{% endif %}>
+            <span>Permanent redirect. Leave unchecked for a temporary redirect that can still be edited freely.</span>
+        </label>
+
+        <label>
+            <input type="checkbox" name="is_disabled" value="true" {% if link and link.is_disabled %}checked{% endif %}>
+            <span>Disabled</span>
+        </label>
+    </form>
+
+    <div class="group">
+        <button type="submit" form="link-form">Save</button>
+
+        {% if link and link.id %}
+            <button type="submit"
+                    form="link-form"
+                    formaction="{{ url_for('links.delete_link', link_id=link.id) }}"
+                    onclick="return confirm('Delete &quot;{{ link.slug }}&quot;? This can\'t be undone.');">Delete</button>
+        {% endif %}
+    </div>
+{% endblock %}

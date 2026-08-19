@@ -13,7 +13,7 @@ load_dotenv(override=True)
 
 app = Flask(__name__)
 
-app.secret_key = os.getenv("SECRET_KEY", os.urandom(100).hex())
+app.secret_key = os.getenv("SECRET_KEY_BASE", os.urandom(100).hex())
 app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL", "sqlite:///hop.db")
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(days=31)

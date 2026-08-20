@@ -21,8 +21,11 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(days=31)
 app.config["SESSION_COOKIE_SAMESITE"] = "Lax"
 
-ADMIN_DOMAIN = os.getenv("ADMIN_DOMAIN", "")
-REDIRECT_DOMAIN = os.getenv("REDIRECT_DOMAIN", "")
+ADMIN_DOMAIN = os.getenv("ADMIN_DOMAIN")
+REDIRECT_DOMAIN = os.getenv("REDIRECT_DOMAIN")
+
+if not ADMIN_DOMAIN or not REDIRECT_DOMAIN:
+    raise RuntimeError("ADMIN_DOMAIN and REDIRECT_DOMAIN must be set")
 
 db.init_app(app)
 register_filters(app)

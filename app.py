@@ -13,6 +13,7 @@ from utils.filters import register_filters
 load_dotenv(override=True)
 
 app = Flask(__name__)
+app.debug = __name__ == "__main__"
 
 app.secret_key = os.getenv("SECRET_KEY_BASE", os.urandom(100).hex())
 app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL", "sqlite:///hop.db")
@@ -27,11 +28,12 @@ db.init_app(app)
 register_filters(app)
 register_routes(app)
 
-if os.getenv("AUTH_PROVIDER") != "nym":
-    raise RuntimeError("AUTH_PROVIDER must be set to 'nym' (no other auth providers are supported)")
+if not app.debug:
+    if os.getenv("AUTH_PROVIDER") != "nym":
+        raise RuntimeError("AUTH_PROVIDER must be set to 'nym' outside of dev")
 
-nym = Nym()
-nym.init_app(app, endpoint=os.getenv("AUTH_ENDPOINT"))
+    nym = Nym()
+    nym.init_app(app, endpoint=os.getenv("AUTH_ENDPOINT"))
 
 with app.app_context():
     db.create_all()
@@ -71,4 +73,4 @@ def redirect_slug(slug):
 
 
 if __name__ == "__main__":
-    app.run(debug=True, port=4000, host="0.0.0.0")
+    app.run(port=4000, host="0.0.0.0")

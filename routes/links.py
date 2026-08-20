@@ -1,8 +1,8 @@
 from flask import Blueprint, flash, redirect, render_template, request, url_for
-from nym import require_auth
 from sqlalchemy.exc import IntegrityError
 
 from models import Link, db, now
+from utils.auth import require_auth
 
 links_bp = Blueprint("links", __name__)
 

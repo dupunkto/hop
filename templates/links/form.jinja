@@ -33,12 +33,12 @@
         </label>
 
         <label>
-            Slug
+            Path
             <input type="text"
                    name="slug"
                    pattern="/?([a-z0-9]+(-[a-z0-9]+)*)?"
                    placeholder="leave blank for the apex / redirect"
-                   value="{{ link.slug if link else '' }}">
+                   value="{{ '/' ~ link.slug if link else '' }}">
         </label>
 
         <label>
@@ -67,7 +67,7 @@
             <button type="submit"
                     form="link-form"
                     formaction="{{ url_for('links.delete_link', link_id=link.id) }}"
-                    onclick="return confirm('Delete &quot;{{ link.slug }}&quot;? This can\'t be undone.');">Delete</button>
+                    onclick="return confirm('Delete &quot;/{{ link.slug }}&quot;? This can\'t be undone.');">Delete</button>
     {% endif %}
 
             <div class="group">

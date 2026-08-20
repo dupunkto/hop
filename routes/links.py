@@ -65,7 +65,7 @@ def create_link():
     except IntegrityError:
         db.session.rollback()
         if fields["slug"]:
-            flash("That slug is already in use.", "error")
+            flash("That path is already in use.", "error")
         else:
             flash("The / redirect is already in use.", "error")
         return render_template("links/form.jinja", link=link), 400
@@ -105,7 +105,7 @@ def update_link(link_id):
         return render_template("links/form.jinja", link=link), 400
     except IntegrityError:
         db.session.rollback()
-        flash("That slug is already in use.", "error")
+        flash("That path is already in use.", "error")
         return render_template("links/form.jinja", link=link), 400
 
     flash("Link saved.", "success")

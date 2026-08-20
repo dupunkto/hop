@@ -39,7 +39,7 @@ class Link(db.Model):
     def validate_slug(self, key, value):
         value = (value or "").strip().lower().lstrip("/")
         if value and not SLUG_RE.match(value):
-            raise ValueError("A slug can only contain lowercase letters, digits and hyphens.")
+            raise ValueError("A path can only contain lowercase letters, digits and hyphens.")
         return value
 
     @validates("target_url")

@@ -2,7 +2,7 @@ from flask import Blueprint, flash, redirect, render_template, request, url_for
 from sqlalchemy.exc import IntegrityError
 
 from models import Link, db, now
-from utils.auth import require_auth
+from utils.auth import is_authenticated, require_auth
 
 links_bp = Blueprint("links", __name__)
 
@@ -19,10 +19,18 @@ def read_link_form():
 
 
 @links_bp.get("/")
-@require_auth
 def list_links():
+    if not is_authenticated():
+        return render_template("landing.jinja")
+
     links = Link.query.order_by(Link.created_at.desc()).all()
     return render_template("links/list.jinja", links=links)
+
+
+@links_bp.get("/login")
+@require_auth
+def login():
+    return redirect(url_for("links.list_links"))
 
 
 @links_bp.get("/new")

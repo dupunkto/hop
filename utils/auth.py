@@ -1,7 +1,11 @@
 import functools
 
-from flask import current_app
+from flask import current_app, g
 from nym import require_auth as _nym_require_auth
+
+
+def is_authenticated():
+    return current_app.debug or g.get("authenticated", False)
 
 
 def require_auth(view):

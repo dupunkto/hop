@@ -37,8 +37,9 @@
             <input type="text"
                    name="slug"
                    pattern="/?([a-z0-9]+(-[a-z0-9]+)*)?"
-                   placeholder="leave blank for the apex / redirect"
-                   value="{{ '/' ~ link.slug if link else '' }}">
+                   placeholder="/example"
+                   value="{{ '/' ~ link.slug if link else '' }}"
+                   required>
         </label>
 
         <label>

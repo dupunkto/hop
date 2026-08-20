@@ -1,0 +1,35 @@
+@import url("https://cdn.dupunkto.org/tools.css");
+
+.bar {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1em;
+  gap: 0.25em;
+}
+
+.bar h2,
+.bar h3 {
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+
+form {
+  margin-bottom: 1em;
+}
+
+.group {
+  display: flex;
+  flex-direction: row;
+  gap: 0.25em;
+  margin: 0;
+  justify-content: flex-end;
+}
+
+.placeholder-text {
+  text-align: center;
+  opacity: 0.65;
+  margin: 8em 0;
+}

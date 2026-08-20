@@ -23,7 +23,7 @@
           method="post"
           action="{%- if link and link.id -%}{{ url_for('links.update_link', link_id=link.id) }}{%- else -%}{{ url_for('links.create_link') }}{%- endif -%}">
         <label>
-            Target URL
+            Target
             <input type="url"
                    name="target_url"
                    placeholder="https://example.com/some/long/path"
@@ -62,14 +62,20 @@
         </label>
     </form>
 
-    <div class="group">
-        <button type="submit" form="link-form">Save</button>
-
-        {% if link and link.id %}
+    {% if link and link.id %}
+        <div class="bar">
             <button type="submit"
                     form="link-form"
                     formaction="{{ url_for('links.delete_link', link_id=link.id) }}"
                     onclick="return confirm('Delete &quot;{{ link.slug }}&quot;? This can\'t be undone.');">Delete</button>
-        {% endif %}
-    </div>
+    {% endif %}
+
+            <div class="group">
+                <a class="button" href="{{ url_for('links.list_links') }}">Cancel</a>
+                <button type="submit" form="link-form">Save</button>
+            </div>
+
+    {% if link and link.id %}
+        </div>
+    {% endif %}
 {% endblock %}

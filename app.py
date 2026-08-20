@@ -4,6 +4,7 @@ from datetime import timedelta
 from dotenv import load_dotenv
 from flask import Flask, abort, redirect, request
 from nym import Nym
+from werkzeug.middleware.proxy_fix import ProxyFix
 
 from migrations import run_migrations
 from models import Link, db
@@ -14,12 +15,14 @@ load_dotenv(override=True)
 
 app = Flask(__name__)
 app.debug = __name__ == "__main__"
+app.wsgi_app = ProxyFix(app.wsgi_app, x_proto=1)
 
 app.secret_key = os.getenv("SECRET_KEY_BASE", os.urandom(100).hex())
 app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL", "sqlite:///hop.db")
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(days=31)
 app.config["SESSION_COOKIE_SAMESITE"] = "Lax"
+app.config["SESSION_COOKIE_SECURE"] = not app.debug
 
 ADMIN_DOMAIN = os.getenv("ADMIN_DOMAIN")
 REDIRECT_DOMAIN = os.getenv("REDIRECT_DOMAIN")

@@ -36,8 +36,8 @@
             Slug
             <input type="text"
                    name="slug"
-                   pattern="[a-z0-9]+(-[a-z0-9]+)*"
-                   placeholder="{%- if link and link.id -%}leave blank to make this the / redirect{%- else -%}leave blank to auto-generate{%- endif -%}"
+                   pattern="/?([a-z0-9]+(-[a-z0-9]+)*)?"
+                   placeholder="leave blank for the apex / redirect"
                    value="{{ link.slug if link else '' }}">
         </label>
 
@@ -53,7 +53,7 @@
                    name="is_permanent"
                    value="true"
                    {% if link and link.is_permanent %}checked{% endif %}>
-            <span>Permanent redirect. Leave unchecked for a temporary redirect that can still be edited freely.</span>
+            <span>Permanent redirect</span>
         </label>
 
         <label>

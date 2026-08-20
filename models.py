@@ -9,7 +9,6 @@ from sqlalchemy.orm import validates
 db = SQLAlchemy()
 
 ID_LENGTH = 8
-SLUG_LENGTH = 6
 
 SLUG_RE = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
 
@@ -17,11 +16,6 @@ SLUG_RE = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
 def generate_id():
     chars = string.ascii_uppercase + string.digits
     return "".join(secrets.choice(chars) for _ in range(ID_LENGTH))
-
-
-def generate_slug():
-    chars = string.ascii_lowercase + string.digits
-    return "".join(secrets.choice(chars) for _ in range(SLUG_LENGTH))
 
 
 def now():
@@ -43,7 +37,7 @@ class Link(db.Model):
 
     @validates("slug")
     def validate_slug(self, key, value):
-        value = (value or "").strip().lower()
+        value = (value or "").strip().lower().lstrip("/")
         if value and not SLUG_RE.match(value):
             raise ValueError("A slug can only contain lowercase letters, digits and hyphens.")
         return value

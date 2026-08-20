@@ -1,4 +1,5 @@
 from flask import Blueprint, flash, redirect, render_template, request, url_for
+from nym import require_auth
 from sqlalchemy.exc import IntegrityError
 
 from models import Link, db, now
@@ -18,17 +19,20 @@ def read_link_form():
 
 
 @links_bp.get("/")
+@require_auth
 def list_links():
     links = Link.query.order_by(Link.created_at.desc()).all()
     return render_template("links/list.jinja", links=links)
 
 
 @links_bp.get("/new")
+@require_auth
 def new_link():
     return render_template("links/form.jinja", link=None)
 
 
 @links_bp.post("/")
+@require_auth
 def create_link():
     fields = read_link_form()
 
@@ -63,12 +67,14 @@ def create_link():
 
 
 @links_bp.get("/<link_id>/edit")
+@require_auth
 def edit_link(link_id):
     link = Link.query.get_or_404(link_id)
     return render_template("links/form.jinja", link=link)
 
 
 @links_bp.post("/<link_id>/update")
+@require_auth
 def update_link(link_id):
     link = Link.query.get_or_404(link_id)
     fields = read_link_form()
@@ -99,6 +105,7 @@ def update_link(link_id):
 
 
 @links_bp.post("/<link_id>/delete")
+@require_auth
 def delete_link(link_id):
     link = Link.query.get_or_404(link_id)
     db.session.delete(link)

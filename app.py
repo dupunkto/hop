@@ -3,6 +3,7 @@ from datetime import timedelta
 
 from dotenv import load_dotenv
 from flask import Flask, abort, redirect, request
+from nym import Nym
 
 from migrations import run_migrations
 from models import Link, db
@@ -25,6 +26,9 @@ REDIRECT_DOMAIN = os.getenv("REDIRECT_DOMAIN", "")
 db.init_app(app)
 register_filters(app)
 register_routes(app)
+
+nym = Nym()
+nym.init_app(app, endpoint=os.getenv("AUTH_ENDPOINT"))
 
 with app.app_context():
     db.create_all()

@@ -27,6 +27,9 @@ db.init_app(app)
 register_filters(app)
 register_routes(app)
 
+if os.getenv("AUTH_PROVIDER") != "nym":
+    raise RuntimeError("AUTH_PROVIDER must be set to 'nym' (no other auth providers are supported)")
+
 nym = Nym()
 nym.init_app(app, endpoint=os.getenv("AUTH_ENDPOINT"))
 

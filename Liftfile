@@ -1,3 +1,6 @@
 name: hop
 image: dupunkto/hop
+registry:
+  - ducr.io
+  - ghcr.io
 host: nov.dupunk.to
